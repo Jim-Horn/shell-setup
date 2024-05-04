@@ -38,5 +38,5 @@ code .
 
 # Open the browser and then start the app
 echo -e "\nOpening browser and starting the app...\n"
-(sleep 3; open http://localhost:8000/) &
-yarn clean && yarn start
+(sleep 5; open http://localhost:9000/) &
+yarn clean && yarn build && yarn serve
