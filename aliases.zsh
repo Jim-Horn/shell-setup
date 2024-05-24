@@ -66,17 +66,23 @@ pull() {
     fi
 }
 
-delmerged(){
+// document this function
+delmerged() {
+    main_branch="develop"
 
-	# List all local branches and loop through them
-	for branch in $(git branch --format '%(refname:short)'); do
-	  # Skip the develop branch
-	  if [ "$branch" != "develop" ]; then
-		# Delete the local branch
-		git branch -D $branch
-	  fi
-	done
+    # Checkout the main branch to compare other branches
+    git checkout $main_branch
+
+    # List all local branches and loop through them
+    for branch in $(git branch --merged | grep -v "\*" | tr -d ' '); do
+        # Skip the main branch
+        if [ "$branch" != "$main_branch" ]; then
+            # Delete the merged local branch
+            git branch -d $branch
+        fi
+    done
 }
+
 
 alias update_deps='~/.config/zsh/config.d/shell_scripts/update_deps.sh'
 alias deps=update_deps
