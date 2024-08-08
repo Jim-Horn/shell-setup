@@ -9,3 +9,5 @@ export NVM_DIR="$HOME/.nvm"
 export PNPM_HOME="/Users/jdhorn/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
+
+export GIT_CONFIG_GLOBAL=~/my_git_configs/.gitconfig
