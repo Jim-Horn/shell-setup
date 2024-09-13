@@ -1,7 +1,5 @@
 echo "--- source aliases.zsh ---"
 
-eval $(thefuck --alias)
-alias darn=fuck
 alias deltemp="echo '>>> git branch | grep tmp | xargs git branch -D' && git branch | grep tmp | xargs git branch -D && echo '>>> git remote prune origin' && git remote prune origin"
 alias grid="echo '>>> git rebase -i develop' && git rebase -i develop"
 alias rmNext='find . -type d -name ".next" -print0 | xargs -0 -I {} sh -c "echo Removing {}; rm -r {}"'
@@ -66,7 +64,6 @@ pull() {
     fi
 }
 
-// document this function
 delmerged() {
     main_branch="develop"
 
@@ -88,3 +85,25 @@ alias update_deps='~/.config/zsh/config.d/shell_scripts/update_deps.sh'
 alias deps=update_deps
 
 alias deldeps='~/.config/zsh/config.d/shell_scripts/remove_deps_branches.sh'
+
+# SSO generator
+SSO_GENERATOR_JAR="/Users/jim.horn/Documents/ssogenerator/2.0.3/SSOGenerator.jar" # replace this with your local download location
+alias asurion_refresh_aws_credentials="java -jar $SSO_GENERATOR_JAR"
+alias availcred="cat ~/.aws/credentials|grep --color=none \"asurion-\"|sed 's/[][]//g'"
+ 
+function asurion_set_aws_credentials () {
+  echo "refreshing tokens"
+  asurion_refresh_aws_credentials
+  if (( $# == 0 ))
+  then
+    echo "usage: asurion_set_aws_credentials [profile name]";
+  else
+    export AWS_ACCESS_KEY_ID=`grep -A 3 $1 ~/.aws/credentials | grep aws_access_key | sed -e "s/.*=//g"`
+    export AWS_SECRET_ACCESS_KEY=`grep -A 3 $1 ~/.aws/credentials | grep aws_secret_access_key | sed -e "s/.*=//g"`
+    export AWS_SECURITY_TOKEN=`grep -A 3 $1 ~/.aws/credentials | grep aws_session_token | sed -e "s/aws_session_token=//g"`
+    export AWS_SESSION_TOKEN=$AWS_SECURITY_TOKEN
+  fi
+}
+
+alias setaws=asurion_set_aws_credentials
+alias ldap='java -jar ~/Downloads/ldap-2.2.0.jar'
